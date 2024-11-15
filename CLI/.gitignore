@@ -3,3 +3,6 @@ node_modules/
 
 # 生成ファイルを除外
 *.html
+
+# lockファイルを除外
+package-lock.json
