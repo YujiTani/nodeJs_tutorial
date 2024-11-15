@@ -1,0 +1,5 @@
+# node_modules ディレクトリを除外
+node_modules/
+
+# 生成ファイルを除外
+*.html
