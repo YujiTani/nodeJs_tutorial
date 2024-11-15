@@ -1,9 +1,10 @@
 const path = require('path')
 const fs = require('fs')
 const yargs = require('yargs')
+const { marked } = require('marked')
 const { hideBin } = require('yargs/helpers')
 const { getPackageName } = require('./libs/name')
-const { getFile } = require('./libs/file')
+const { readMarkdownFilesync, writeHtmlFileSync } = require('./libs/file')
 
 const { argv } = yargs(hideBin(process.argv))
   .option('name', {
@@ -14,10 +15,18 @@ const { argv } = yargs(hideBin(process.argv))
     type: 'string',
     describe: 'MarkDownファイルのパス',
   })
+  .option('out', {
+    describe: '出力するファイルのパス',
+    default: 'article.html',
+  })
 
 if (argv.name) {
   console.log(getPackageName())
   process.exit(0)
 } 
 
-console.log(getFile(argv.file))
+const markdownStr = readMarkdownFilesync(argv.file)
+console.log(markdownStr)
+
+const html = marked(markdownStr)
+writeHtmlFileSync(argv.out, html)
