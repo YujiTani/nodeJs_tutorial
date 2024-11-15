@@ -9,5 +9,5 @@ npm install
 
 ```
 # パッケージの実行
-node index.js --file=your.md --out=your.html
+./index.js --file=your.md --out=your.html
 ```
