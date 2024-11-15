@@ -9,5 +9,5 @@ npm install
 
 ```
 # パッケージの実行
-./index.js --file=your.md --out=your.html
+./create-html --file=your.md --out=your.html
 ```
