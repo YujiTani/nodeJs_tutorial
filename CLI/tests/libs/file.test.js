@@ -1,6 +1,12 @@
 import { readMarkdownFileSync } from "../../libs/file.js";
+import path from "path";
+import __dirname from "./dirname.cjs";
 
 test("readMarkdownFileSync はMarkdownファイルを読み込む", () => {
-  const markdownStr = readMarkdownFileSync("./test.md");
-  expect(markdownStr).toContain("# タイトル");
+  // ルートディレクトリからのパス
+  const markdownStr = readMarkdownFileSync(
+    path.resolve(__dirname, "../test.md"),
+  );
+  expect(markdownStr).toContain("## test.md");
+  expect(markdownStr).toContain("- テストファイル");
 });
