@@ -6,3 +6,6 @@ node_modules/
 
 # lockファイルを除外
 package-lock.json
+
+# カバレッジファイルを除外
+coverage/
