@@ -8,14 +8,16 @@ export default defineConfig([
     ...eslint.configs.recommended,
   },
   {
-    files: ["*.js"],
+    files: ["**/*.js"],
     languageOptions: {
       ecmaVersion: 2021,
-      sourceType: "commonjs",
+      sourceType: "module",
       globals: {
         require: "readonly",
         exports: "readonly",
         module: "readonly",
+        process: "readonly",
+        console: "readonly",
       },
     },
     rules: {

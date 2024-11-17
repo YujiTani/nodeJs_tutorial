@@ -1,10 +1,10 @@
-const fs = require("fs");
+import fs from "fs";
 
-exports.readMarkdownFileSync = (filePath) => {
+export const readMarkdownFileSync = (filePath) => {
   const markdownStr = fs.readFileSync(filePath, "utf-8");
   return markdownStr;
 };
 
-exports.writeHtmlFileSync = (filePath, html) => {
+export const writeHtmlFileSync = (filePath, html) => {
   fs.writeFileSync(filePath, html, "utf-8");
 };

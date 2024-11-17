@@ -1,12 +1,10 @@
 #! /usr/bin/env node
 
-const path = require("path");
-const fs = require("fs");
-const yargs = require("yargs");
-const { hideBin } = require("yargs/helpers");
-const { marked } = require("marked");
-const { getPackageName } = require("./libs/name");
-const { readMarkdownFileSync, writeHtmlFileSync } = require("./libs/file");
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import { marked } from "marked";
+import { getPackageName } from "./libs/name.js";
+import { readMarkdownFileSync, writeHtmlFileSync } from "./libs/file.js";
 
 const { argv } = yargs(hideBin(process.argv))
   .option("name", {
