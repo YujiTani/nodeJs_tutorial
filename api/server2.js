@@ -1,12 +1,13 @@
 // Node.js用のRedisクライアントライブラリ
 const Redis = require("ioredis");
+// Express フレームワークを使用
 const express = require("express");
 const app = express();
 
 const redis = new Redis({
   host: "localhost", // デフォルトのホスト
   port: 6379, // デフォルトのポート
-  password: "password", // デフォルトのパスワード
+  password: process.env.REDIS_PASSWORD,
   enableOfflineQueue: false, // デフォルトのオフラインキュー
 });
 
@@ -20,8 +21,8 @@ app.get("/users/:id", (req, res) => {
 
 redis.once("ready", () => {
   try {
-    app.listen(3005, () => {
-      console.log("Server is running on port 3005");
+    app.listen(3010, () => {
+      console.log("Server is running on port 3010");
     });
   } catch (error) {
     console.error(error);
@@ -29,7 +30,7 @@ redis.once("ready", () => {
   }
 });
 
-redis,on('error', (err) => {
+redis.on('error', (err) => {
   console.error("err", err);
   process.exit(1);
 });

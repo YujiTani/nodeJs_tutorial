@@ -1,6 +1,8 @@
-const express = require('express')
+// Express フレームワークを使用
+const express = require("express");
+// ミドルウェアを使用
 const { logTime, logMethodAndUrl } = require("./middleware/Logger");
-const app = express()
+const app = express();
 const router = express.Router()
 
 // エラーハンドリング
