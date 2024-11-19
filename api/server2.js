@@ -25,8 +25,37 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello World\n");
 });
 
-app.get("/users/:id", (req, res) => {
-  res.status(200).send(`User id: ${req.params.id}`);
+app.get("/users/:id", async (req, res) => {
+  try {
+    const key = `users:${req.params.id}`;
+    const result = await redis.get(key);
+    const user = JSON.parse(result);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    const stream = redis.scanStream({
+      match: "users:*",
+      count: 2,
+    });
+
+    const users = [];
+    for await (const resultKeys of stream) {
+      for (const key of resultKeys) {
+        const result = await redis.get(key);
+        const user = JSON.parse(result);
+        users.push(user);
+      }
+    }
+    
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 redis.once("ready", async () => {
