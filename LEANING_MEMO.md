@@ -1,5 +1,23 @@
 # 学習メモ
 
+## 2024/11/19
+
+### 学習内容
+
+- Express を使って API サーバーを作成
+  - Express の基本機能を理解できる
+    - ルーティング
+    - ミドルウェア ... ミドルウェアは express を使う上で作成せざるを得ないものになるが、氾濫しないように大きな共通化ができるか、必要最小限な数になっているか意識が必要
+      例えば、下記のミドルウェアは汎用的な処理のため、参考にすると良い
+      - helmet https://www.npmjs.com/package/helmet
+      - body-parser https://www.npmjs.com/package/body-parser
+      - cookie-parser https://www.npmjs.com/package/cookie-parser
+    - 包括的エラーハンドリング
+      - 4 つの引数を持つミドルウェアとして定義する
+      - app.use の中でも最後に定義する
+      - Express でアプリケーション開発する場合、自分で包括的エラーハンドリング用のミドルウェアを設定します
+    - redis について
+
 ## 2024/11/17
 
 ### 学習内容
