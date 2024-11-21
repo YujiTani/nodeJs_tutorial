@@ -30,6 +30,9 @@ const init = async () => {
   await redis.lpush("users", JSON.stringify({ id: 4, name: "delta" }));
 };
 
+// 静的ファイルは慣例的に public ディレクトリに配置する
+app.use('/static', express.static(path.join(__dirname, 'public')))
+
 app.get("/", (req, res) => {
   res.status(200).send("Hello World\n");
 });

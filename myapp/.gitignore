@@ -1,0 +1,5 @@
+# node_modules ディレクトリを除外
+node_modules/
+
+# lockファイルを除外
+package-lock.json
