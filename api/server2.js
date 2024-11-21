@@ -12,13 +12,22 @@ const redis = new Redis({
 });
 
 // 初期データをRedisに挿入
+// const init = async () => {
+//   await Promise.all([
+//     redis.set("users:1", JSON.stringify({ id: 1, name: "alpha" })),
+//     redis.set("users:2", JSON.stringify({ id: 2, name: "bravo" })),
+//     redis.set("users:3", JSON.stringify({ id: 3, name: "charlie" })),
+//     redis.set("users:4", JSON.stringify({ id: 4, name: "delta" })),
+//   ]);
+// };
+
+// 初期データをリスト方に変更
+// redisを使ったページネーション処理には、lrangeを使ってリスト形式でデータを管理する
 const init = async () => {
-  await Promise.all([
-    redis.set("users:1", JSON.stringify({ id: 1, name: "alpha" })),
-    redis.set("users:2", JSON.stringify({ id: 2, name: "bravo" })),
-    redis.set("users:3", JSON.stringify({ id: 3, name: "charlie" })),
-    redis.set("users:4", JSON.stringify({ id: 4, name: "delta" })),
-  ]);
+  await redis.lpush("users", JSON.stringify({ id: 1, name: "alpha" }));
+  await redis.lpush("users", JSON.stringify({ id: 2, name: "bravo" }));
+  await redis.lpush("users", JSON.stringify({ id: 3, name: "charlie" }));
+  await redis.lpush("users", JSON.stringify({ id: 4, name: "delta" }));
 };
 
 app.get("/", (req, res) => {
@@ -38,20 +47,30 @@ app.get("/users/:id", async (req, res) => {
 
 app.get("/users", async (req, res) => {
   try {
-    const stream = redis.scanStream({
-      match: "users:*",
-      count: 2,
-    });
+    // stream を使った処理
+    // const stream = redis.scanStream({
+    //   match: "users:*",
+    //   count: 2,
+    // });
 
-    const users = [];
-    for await (const resultKeys of stream) {
-      for (const key of resultKeys) {
-        const result = await redis.get(key);
-        const user = JSON.parse(result);
-        users.push(user);
-      }
-    }
-    
+    // const users = [];
+    // for await (const resultKeys of stream) {
+    //   for (const key of resultKeys) {
+    //     const result = await redis.get(key);
+    //     const user = JSON.parse(result);
+    //     users.push(user);
+    //   }
+    // }
+
+    const offset = req.query.offset ? Number(req.query.offset) : 0;
+    const userlist = await redis.lrange('users', offset, offset + 10);
+
+    // console.log('userlist', userlist);
+    const users = userlist.map ((user) => {
+      return JSON.parse(user)
+    });
+    // console.log('users', users);
+
     res.status(200).json(users);
   } catch (error) {
     res.status(500).send("Internal Server Error");
