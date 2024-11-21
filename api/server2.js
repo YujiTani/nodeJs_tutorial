@@ -1,36 +1,7 @@
-// Node.js用のRedisクライアントライブラリ
-const Redis = require("ioredis");
 // Express フレームワークを使用
 const express = require("express");
 const app = express();
 
-const redis = new Redis({
-  host: "localhost", // デフォルトのホスト
-  port: 6379, // デフォルトのポート
-  password: process.env.REDIS_PASSWORD, // 一旦実行時に環境変数を設定する
-  enableOfflineQueue: false, // デフォルトのオフラインキュー
-});
-
-// 初期データをRedisに挿入
-// const init = async () => {
-//   await Promise.all([
-//     redis.set("users:1", JSON.stringify({ id: 1, name: "alpha" })),
-//     redis.set("users:2", JSON.stringify({ id: 2, name: "bravo" })),
-//     redis.set("users:3", JSON.stringify({ id: 3, name: "charlie" })),
-//     redis.set("users:4", JSON.stringify({ id: 4, name: "delta" })),
-//   ]);
-// };
-
-// 初期データをリスト方に変更
-// redisを使ったページネーション処理には、lrangeを使ってリスト形式でデータを管理する
-const init = async () => {
-  await redis.lpush("users", JSON.stringify({ id: 1, name: "alpha" }));
-  await redis.lpush("users", JSON.stringify({ id: 2, name: "bravo" }));
-  await redis.lpush("users", JSON.stringify({ id: 3, name: "charlie" }));
-  await redis.lpush("users", JSON.stringify({ id: 4, name: "delta" }));
-};
-
-// 静的ファイルは慣例的に public ディレクトリに配置する
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.get("/", (req, res) => {
